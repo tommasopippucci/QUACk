@@ -37,6 +37,7 @@ Provider: Name of the sequencing provider
 
 ---
 #reference sequence fasta/fa files ### can be different reference sequences
+
 hg19,/archive/ngsbo/db/hg19/ucsc.hg19.fasta
 GRCh38,/archive/ngsbo/db/GRCh38/hs38.fa
 hs37d5,/archive/ngsbo/db/hs37d5/hs37d5.fa
