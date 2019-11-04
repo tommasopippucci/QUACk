@@ -37,11 +37,11 @@ SAMPLE  FICD    2       CCCT MedExome   Gencode    Library2  Illumina   Seq     
 
 ---
 - reference sequence fasta/fa files (can be different reference sequences)
-    hg19,/archive/ngsbo/db/hg19/ucsc.hg19.fasta
-    GRCh38,/archive/ngsbo/db/GRCh38/hs38.fa
-    hs37d5,/archive/ngsbo/db/hs37d5/hs37d5.fa
+-- hg19,/archive/ngsbo/db/hg19/ucsc.hg19.fasta
+-- GRCh38,/archive/ngsbo/db/GRCh38/hs38.fa
+-- hs37d5,/archive/ngsbo/db/hs37d5/hs37d5.fa
 - wes target bed files folder (complete folder path where target bed files are stored)
-    target_dir,/archive/ngsbo/db/regions/
+-- target_dir,/archive/ngsbo/db/regions/
 #alignment algorithm commands ### command-line command for aligner (no options, no arguments)
 bwa,bwa
 #SAM/BAM manipulation and calling algorithm commands ### command-line command for samtools, picard, gatk, ... (no options, no arguments)
