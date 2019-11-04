@@ -21,28 +21,27 @@ SAMPLE  FICD    2       CCCT MedExome   Gencode    Library2  Illumina   Seq     
 
 
 ---
-Sample: Sample Name
-FlowCell: FlowCell ID
-Lane: FlowCell Lane number
-Index: Index Sequence
-Enrichment: Target enrichment used (if used)
-Target Set: Target set used in the analysis (can be different from Enrichment)
-Library: Name of library performed
-Platform: Sequencing platform used
-Provider: Name of the sequencing provider
+- Sample: Sample Name
+- FlowCell: FlowCell ID
+- Lane: FlowCell Lane number
+- Index: Index Sequence
+- Enrichment: Target enrichment used (if used)
+- Target Set: Target set used in the analysis (can be different from Enrichment)
+- Library: Name of library performed
+- Platform: Sequencing platform used
+- Provider: Name of the sequencing provider
 
 ---
 
 ### *PARAMETER* file, comma-delimited. Example:
 
 ---
-#reference sequence fasta/fa files ### can be different reference sequences
-
-hg19,/archive/ngsbo/db/hg19/ucsc.hg19.fasta
-GRCh38,/archive/ngsbo/db/GRCh38/hs38.fa
-hs37d5,/archive/ngsbo/db/hs37d5/hs37d5.fa
-#wes target bed files folder ### complete folder path where target bed files are stored
-target_dir,/archive/ngsbo/db/regions/
+- reference sequence fasta/fa files (can be different reference sequences)
+    hg19,/archive/ngsbo/db/hg19/ucsc.hg19.fasta
+    GRCh38,/archive/ngsbo/db/GRCh38/hs38.fa
+    hs37d5,/archive/ngsbo/db/hs37d5/hs37d5.fa
+- wes target bed files folder (complete folder path where target bed files are stored)
+    target_dir,/archive/ngsbo/db/regions/
 #alignment algorithm commands ### command-line command for aligner (no options, no arguments)
 bwa,bwa
 #SAM/BAM manipulation and calling algorithm commands ### command-line command for samtools, picard, gatk, ... (no options, no arguments)
