@@ -1,19 +1,25 @@
 # QUACk
 QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts to perform three-steps NGS analysis (1. Read quality; 2. Alignment and alignment statistics; 3. Creation of gVCF)
 
-Usage: quack.pl -sample_sheet <SAMPLE_FILE.sample> -param <PARAMETER_FILE.param> -reference <hg19|hg38|..> -project <PATH/TO/PROJECT/FOLDER> [-aligner <default:BWA> -threads <default:1> -fastq_extension <default:fastq.gz>]
+### Usage
 
-FastQ files MUST be in the filename form:
+quack.pl -sample_sheet <SAMPLE_FILE.sample> -param <PARAMETER_FILE.param> -reference <hg19|hg38|..> -project <PATH/TO/PROJECT/FOLDER> 
 
-<Sample_Name>_L<Lane_Number>_<FlowCell_ID>_<Index_Sequence>_R<1(forward)|2(reverse)>.<fastQ extension>
+Optional parameters -aligner <default:bwa> -threads <default:1> -fastq_extension <default:fastq.gz> -fastq_suffix <default: no string>
 
-SAMPLE FILE, tab-delimited. Example:
+## INPUT files
+
+### *FastQ* files, having the following mandatory filename form:
+
+<Sample_Name>_L<Lane_Number>_<FlowCell_ID>_<Index_Sequence>_R<1(forward)|2(reverse)><fastQ suffix>.<fastQ extension>
+
+### *SAMPLE* file, tab-delimited. Example:
 
 Sample  FlowCell Lane Index   Enrichment  Target_Set Library    Platform  Provider (Header)
 SAMPLE  FCID    1       ACAG MedExome   Gencode    Library1  Illumina   Seq       (Sample 1)
 SAMPLE  FICD    2       CCCT MedExome   Gencode    Library2  Illumina   Seq       (Sample 2)
 
-Sample. Sample Name
+Sample: Sample Name
 FlowCell: FlowCell ID
 Lane: FlowCell Lane number
 Index: Index Sequence
@@ -23,7 +29,7 @@ Library: Name of library performed
 Platform: Sequencing platform used
 Provider: Name of the sequencing provider
 
-PARAMETER FILE, comma-delimited. Example:
+### *PARAMETER* file, comma-delimited. Example:
 
 #reference sequence fasta/fa files ### can be different reference sequences
 hg19,/archive/ngsbo/db/hg19/ucsc.hg19.fasta
@@ -48,17 +54,19 @@ bam_dir,/archive/ngsbo/bam/
 #GVCF directory ###directory where to store gVCF files
 gvcf_dir,/archive/ngsbo/gvcf/
 
+## Directory architecture
+
 QUACk checks for existence of the working, bam and fastq directories, and generates a directory architecture to store output and temporary files. If the output folder does exist, QUACk generates a folder architecture as follows:
 
 project
-	|_ project_analysis [log file]
-		|_bash
-			|_calling [calling.sh]
-			|_alignment [alignment.sh]
-			|_quality [quality.sh]
-		|_sample...1
-			|_sample_analysis
-				|_qual [results of quality analysis]
-				|_tmp [temporary files]
-		|_sample… 2
+	project_analysis [log file]
+		bash
+			calling [calling.sh]
+			alignment [alignment.sh]
+			quality [quality.sh]
+		sample...1
+			sample_analysis
+				qual [results of quality analysis]
+				tmp [temporary files]
+		sample… 2
 			...
