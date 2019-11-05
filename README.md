@@ -10,17 +10,36 @@ QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts 
 
 **Mandatory options**
 
-        -sample_sheet <SAMPLE_FILE.sample> 
-	-param <PARAMETER_FILE.param> 
-	-reference <hg19|hg38|..> 
-	-project <PATH/TO/PROJECT/FOLDER> 
+        -sample_file <SAMPLE_FILE.sample> 
+        -parameter_file <PARAMETER_FILE.param> 
+        -reference <hg19|hg38|..> 
+        -project <PROJECT_FOLDER>
+	
+---
+**Sample file** and **parameter file** are tab-delimited and comma-delimited files, and contain information about sample sequencing features and analysis parameters, respectively. 
+
+**Reference** can be any released genome sequence pointing to a file path as specified in the **parameter file**. 
+
+**Project folder** can be an existing or a non-existing directory where most analysis files will be located.
+
+---
 
 **Optional parameters**
 
         -aligner <default:bwa> 
-	-threads <default:1> 
-	-fastq_extension <default:fastq.gz> 
-	-fastq_suffix <default:no_string>
+        -threads <default:1> 
+        -fastq_extension <default:fastq.gz> 
+        -fastq_suffix <default:>
+	
+---
+
+**Aligner** is the alignment tool name pointing to a command as specified in the **parameter file**. 
+
+**Threads** is the number of processors to be allocated for tools allowing multi-threading.
+
+**FastQ extension** is the term after the last dot in fastQ file name, the default term being *fastq.gz*.
+
+**FastQ suffix** is an optional term that can be placed before the last dot in fastQ file name, the default being the *empty string*.
 
 ---
 
