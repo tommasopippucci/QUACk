@@ -102,7 +102,7 @@ QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts 
 
 ## Directory architectures
 
-QUACk assumes that there are a *project* directory and its *sample* subdirectory(ies), named as the project argument in the command line and the sample name in the **sample file**, inside the *fastQ* directory as specified in the **parameter file**. Inside *sample* directories, QUACk will search for analysis input fastQ files.
+QUACk assumes that there are a *project* directory and its *sample* subdirectory(ies). The *project* directory can be named as the project argument in the command line and the sample name **MUST** be the same as in the **sample file**, inside the *fastQ* directory as specified in the **parameter file**. Inside *sample* directories, QUACk will search for analysis input fastQ files.
 
 ---
 
