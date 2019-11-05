@@ -87,13 +87,13 @@ QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts 
   - gatk,gatk
 - **(VCF) files with known sites of true variation** (dbSNP (or other) true variation sites to be used)
   - known_sites,/archive/ngsbo/db/ftp.broadinstitute.org/bundle/2.8/hg19/1000G_phase1.snps.high_confidence.hg19.sites.vcf
-- **working directory** (omplete path of directory where tmp and quality files will be stored)
+- **working directory** (absolute path to directory where tmp and quality files will be stored)
   - working_dir,/work/common/pipeline_wes/
-- **fastQ directory** (complete path of directory where fastQ filescan be retrieved)
+- **fastQ directory** (absolute path to directory where fastQ files are located)
   - fastq_dir,/archive/ngsbo/fastq/
-- **BAM directory** (directory where to store final BAM files)
+- **BAM directory** (absolute path to directory where final BAM files will be stored)
   - bam_dir,/archive/ngsbo/bam/
-- **GVCF directory** (directory where to store gVCF files)
+- **GVCF directory** (absolute path to directory where gVCF files will be stored)
   - gvcf_dir,/archive/ngsbo/gvcf/
 
 
