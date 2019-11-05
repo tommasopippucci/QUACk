@@ -5,7 +5,7 @@ QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts 
 
 quack.pl -sample_sheet <SAMPLE_FILE.sample> -param <PARAMETER_FILE.param> -reference <hg19|hg38|..> -project <PATH/TO/PROJECT/FOLDER> 
 
-Optional parameters -aligner <default:bwa> -threads <default:1> -fastq_extension <default:fastq.gz> -fastq_suffix <default: no string>
+Optional parameters: -aligner <default:bwa> -threads <default:1> -fastq_extension <default:fastq.gz> -fastq_suffix <default: no string>
 
 ## INPUT files
 
@@ -48,7 +48,7 @@ Optional parameters -aligner <default:bwa> -threads <default:1> -fastq_extension
   - samtools,samtools
   - picard,picard
   - gatk,gatk
-- **(VCF) files with known sites of true variation** (bSNP (or other) true variation sites to be used)
+- **(VCF) files with known sites of true variation** (dbSNP (or other) true variation sites to be used)
   - known_sites,/archive/ngsbo/db/ftp.broadinstitute.org/bundle/2.8/hg19/1000G_phase1.snps.high_confidence.hg19.sites.vcf
 - **working directory** (omplete path of directory where tmp and quality files will be stored)
   - working_dir,/work/common/pipeline_wes/
@@ -70,15 +70,26 @@ QUACk checks for existence of the working, bam and fastq directories, and genera
 
 ---
 project
+
 	project_analysis [log file]
+
 		bash
+
 			calling [calling.sh]
+
 			alignment [alignment.sh]
+
 			quality [quality.sh]
+
 		sample...1
+
 			sample_analysis
+
 				qual [results of quality analysis]
+
 				tmp [temporary files]
+
 		sample… 2
+
 			...
 ---
