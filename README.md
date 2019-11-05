@@ -22,9 +22,9 @@ Optional parameters: -aligner <default:bwa> -threads <default:1> -fastq_extensio
 |Sample | FlowCell | Lane | Index | Enrichment | Target_Set | Library | Platform | Provider|
 |---    |---       |---   |---    |---         |---         |---      |---       |---      |
 |SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq    |
-|SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq    |
-|SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq    |
-|SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq    |
+|SAMPLE1|  FCID    |2     |  GGAG |MedExome    |Gencode     |Library1 | Illumina |  Seq    |
+|SAMPLE2|  FCID    |3     |  AGAG |MedExome    |Gencode     |Library2 | Illumina |  Seq    |
+|SAMPLE3|  FCID    |2     |  TCAG |MedExome    |Gencode     |Library3 | Illumina |  Seq    |
 
 ---
 - Sample: Sample Name
