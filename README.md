@@ -1,13 +1,26 @@
 # QUACk
+
 QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts to perform three-steps NGS analysis (1. Read quality; 2. Alignment and alignment statistics; 3. Creation of gVCF)
 
 ## Usage
 
----
+**Command**
 
-quack.pl -sample_sheet <SAMPLE_FILE.sample> -param <PARAMETER_FILE.param> -reference <hg19|hg38|..> -project <PATH/TO/PROJECT/FOLDER> 
+    quack.pl 
 
-Optional parameters: -aligner <default:bwa> -threads <default:1> -fastq_extension <default:fastq.gz> -fastq_suffix <default:no_string>
+**Mandatory options**
+
+        -sample_sheet <SAMPLE_FILE.sample> 
+	-param <PARAMETER_FILE.param> 
+	-reference <hg19|hg38|..> 
+	-project <PATH/TO/PROJECT/FOLDER> 
+
+**Optional parameters**
+
+        -aligner <default:bwa> 
+	-threads <default:1> 
+	-fastq_extension <default:fastq.gz> 
+	-fastq_suffix <default:no_string>
 
 ---
 
