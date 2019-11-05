@@ -129,7 +129,7 @@ Inside the *working* directory as specified in the **parameter file**, QUACk wil
 
         project_analysis [log file]
 	
-	    bash
+            bash
 
                 calling [calling.sh]
 
