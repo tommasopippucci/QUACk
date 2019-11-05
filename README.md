@@ -71,11 +71,11 @@ QUACk checks for existence of the working, bam and fastq directories, and genera
 
     project
 
-	project_analysis [log file]
+        project_analysis [log file]
 
-		bash
+	    bash
 
-			calling [calling.sh]
+	        calling [calling.sh]
 
 			alignment [alignment.sh]
 
