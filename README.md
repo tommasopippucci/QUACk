@@ -19,15 +19,12 @@ Optional parameters: -aligner <default:bwa> -threads <default:1> -fastq_extensio
 
 ### *SAMPLE* file, tab-delimited
 
-Sample | FlowCell | Lane | Index | Enrichment | Target_Set | Library | Platform | Provider
----    |---       |---   |---    |---         |---         |---      |---       |  
-SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq
----    |---       |---   |---    |---         |---         |---      |---       |
-SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq
----    |---       |---   |---    |---         |---         |---      |---       |
-SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq
----    |---       |---   |---    |---         |---         |---      |---       |  
-SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq
+|Sample | FlowCell | Lane | Index | Enrichment | Target_Set | Library | Platform | Provider|
+|---    |---       |---   |---    |---         |---         |---      |---       |---      |
+|SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq    |
+|SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq    |
+|SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq    |
+|SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq    |
 
 ---
 - Sample: Sample Name
