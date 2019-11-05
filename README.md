@@ -11,13 +11,13 @@ Optional parameters -aligner <default:bwa> -threads <default:1> -fastq_extension
 
 ### *FastQ* files, having the following mandatory filename form:
 
-<Sample_Name>_L<Lane_Number>_<FlowCell_ID>_<Index_Sequence>_R<1(forward)|2(reverse)><fastQ suffix>.<fastQ extension>
+<Sample_Name>_L<Lane_Number>_<FlowCell_ID>_<Index_Sequence>_R<1(forward)|2(reverse)> <fastQ suffix>.<fastQ extension>
 
-### *SAMPLE* file, tab-delimited. Example:
+### *SAMPLE* file, tab-delimited
 
-Sample  FlowCell Lane Index   Enrichment  Target_Set Library    Platform  Provider (Header)
-SAMPLE  FCID    1       ACAG MedExome   Gencode    Library1  Illumina   Seq       (Sample 1)
-SAMPLE  FICD    2       CCCT MedExome   Gencode    Library2  Illumina   Seq       (Sample 2)
+- Sample  FlowCell Lane Index   Enrichment  Target_Set Library    Platform  Provider (Header)
+  - SAMPLE  FCID    1       ACAG MedExome   Gencode    Library1  Illumina   Seq       (Sample 1)
+  - SAMPLE  FICD    2       CCCT MedExome   Gencode    Library2  Illumina   Seq       (Sample 2)
 
 
 ---
@@ -33,31 +33,31 @@ SAMPLE  FICD    2       CCCT MedExome   Gencode    Library2  Illumina   Seq     
 
 ---
 
-### *PARAMETER* file, comma-delimited. Example:
+### *PARAMETER* file, comma-delimited
 
 ---
-- reference sequence fasta/fa files (can be different reference sequences)
+- **reference sequence fasta/fa files** (can be different reference sequences)
   - hg19,/archive/ngsbo/db/hg19/ucsc.hg19.fasta
   - GRCh38,/archive/ngsbo/db/GRCh38/hs38.fa
   - hs37d5,/archive/ngsbo/db/hs37d5/hs37d5.fa
-- wes target bed files folder (complete folder path where target bed files are stored)
--- target_dir,/archive/ngsbo/db/regions/
-#alignment algorithm commands ### command-line command for aligner (no options, no arguments)
-bwa,bwa
-#SAM/BAM manipulation and calling algorithm commands ### command-line command for samtools, picard, gatk, ... (no options, no arguments)
-samtools,samtools
-picard,picard
-gatk,gatk
-#(VCF) files with known sites of true variation ###dbSNP (or other) true variation sites to be used
-known_sites,/archive/ngsbo/db/ftp.broadinstitute.org/bundle/2.8/hg19/1000G_phase1.snps.high_confidence.hg19.sites.vcf
-#working directory ###complete path of directory where tmp and quality files will be stored
-working_dir,/work/common/pipeline_wes/
-#fastQ directory ###complete path of directory where fastQ filescan be retrieved
-fastq_dir,/archive/ngsbo/fastq/
-#BAM directory ###directory where to store final BAM files
-bam_dir,/archive/ngsbo/bam/
-#GVCF directory ###directory where to store gVCF files
-gvcf_dir,/archive/ngsbo/gvcf/
+- **wes target bed files folder** (complete folder path where target bed files are stored)
+  - target_dir,/archive/ngsbo/db/regions/
+- **alignment algorithm commands** (command-line command for aligner (no options, no arguments))
+  - bwa,bwa
+- **SAM/BAM manipulation and calling algorithm commands** (command-line command for samtools, picard, gatk, ... (no options, no arguments))
+  - samtools,samtools
+  - picard,picard
+  - gatk,gatk
+- **(VCF) files with known sites of true variation** (bSNP (or other) true variation sites to be used)
+  - known_sites,/archive/ngsbo/db/ftp.broadinstitute.org/bundle/2.8/hg19/1000G_phase1.snps.high_confidence.hg19.sites.vcf
+- **working directory** (omplete path of directory where tmp and quality files will be stored)
+  - working_dir,/work/common/pipeline_wes/
+- **fastQ directory** (complete path of directory where fastQ filescan be retrieved)
+  - fastq_dir,/archive/ngsbo/fastq/
+- **BAM directory** (directory where to store final BAM files)
+  - bam_dir,/archive/ngsbo/bam/
+- **GVCF directory** (directory where to store gVCF files)
+  - gvcf_dir,/archive/ngsbo/gvcf/
 
 
 ---
