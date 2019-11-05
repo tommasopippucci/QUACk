@@ -3,22 +3,27 @@ QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts 
 
 ## Usage
 
+---
+
 quack.pl -sample_sheet <SAMPLE_FILE.sample> -param <PARAMETER_FILE.param> -reference <hg19|hg38|..> -project <PATH/TO/PROJECT/FOLDER> 
 
-Optional parameters: -aligner <default:bwa> -threads <default:1> -fastq_extension <default:fastq.gz> -fastq_suffix <default: no string>
+Optional parameters: -aligner <default:bwa> -threads <default:1> -fastq_extension <default:fastq.gz> -fastq_suffix <default:no_string>
+
+---
 
 ## INPUT files
 
 ### *FastQ* files, having the following mandatory filename form:
 
-<Sample_Name>_L<Lane_Number>_<FlowCell_ID>_<Index_Sequence>_R<1(forward)|2(reverse)> <fastQ suffix>.<fastQ extension>
+<Sample_Name>_L<Lane_Number>_<FlowCell_ID>_<Index_Sequence>_R<1(forward)|2(reverse)><fastQ_suffix>.<fastQ_extension>
 
 ### *SAMPLE* file, tab-delimited
 
-- Sample  FlowCell Lane Index   Enrichment  Target_Set Library    Platform  Provider (Header)
-  - SAMPLE  FCID    1       ACAG MedExome   Gencode    Library1  Illumina   Seq       (Sample 1)
-  - SAMPLE  FICD    2       CCCT MedExome   Gencode    Library2  Illumina   Seq       (Sample 2)
-
+- **Sample  FlowCell Lane Index   Enrichment  Target_Set Library    Platform  Provider** (Header)
+  - SAMPLE1  FCID    1       ACAG MedExome   Gencode    Library1  Illumina   Seq
+  - SAMPLE1  FICD    2       CCCT MedExome   Gencode    Library2  Illumina   Seq
+  - SAMPLE2  FCID    3       ACAG MedExome   Gencode    Library1  Illumina   Seq
+  - SAMPLE2  FICD    4       CCCT MedExome   Gencode    Library2  Illumina   Seq
 
 ---
 - Sample: Sample Name
@@ -77,19 +82,19 @@ QUACk checks for existence of the working, bam and fastq directories, and genera
 
 	        calling [calling.sh]
 
-			alignment [alignment.sh]
+                alignment [alignment.sh]
 
-			quality [quality.sh]
+                quality [quality.sh]
 
-		sample...1
+            sample...1
 
-			sample_analysis
+                sample_analysis
 
-				qual [results of quality analysis]
+                    qual [results of quality analysis]
 
-				tmp [temporary files]
+                    tmp [temporary files]
 
-		sample… 2
+            sample… 2
 
-			...
+                ...
 ---
