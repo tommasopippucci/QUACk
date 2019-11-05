@@ -67,9 +67,9 @@ Optional parameters: -aligner <default:bwa> -threads <default:1> -fastq_extensio
 
 QUACk checks for existence of the working, bam and fastq directories, and generates a directory architecture to store output and temporary files. If the output folder does exist, QUACk generates a folder architecture as follows:
 
-
 ---
-project
+
+    project
 
 	project_analysis [log file]
 
