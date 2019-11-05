@@ -19,11 +19,15 @@ Optional parameters: -aligner <default:bwa> -threads <default:1> -fastq_extensio
 
 ### *SAMPLE* file, tab-delimited
 
-- **Sample  FlowCell Lane Index   Enrichment  Target_Set Library    Platform  Provider** (Header)
-  - SAMPLE1  FCID    1       ACAG MedExome   Gencode    Library1  Illumina   Seq
-  - SAMPLE1  FICD    2       CCCT MedExome   Gencode    Library2  Illumina   Seq
-  - SAMPLE2  FCID    3       ACAG MedExome   Gencode    Library1  Illumina   Seq
-  - SAMPLE2  FICD    4       CCCT MedExome   Gencode    Library2  Illumina   Seq
+Sample | FlowCell | Lane | Index | Enrichment | Target_Set | Library | Platform | Provider
+---    |---       |---   |---    |---         |---         |---      |---       |  
+SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq
+---    |---       |---   |---    |---         |---         |---      |---       |
+SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq
+---    |---       |---   |---    |---         |---         |---      |---       |
+SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq
+---    |---       |---   |---    |---         |---         |---      |---       |  
+SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq
 
 ---
 - Sample: Sample Name
@@ -77,10 +81,10 @@ QUACk checks for existence of the working, bam and fastq directories, and genera
     project
 
         project_analysis [log file]
-
+	
 	    bash
 
-	        calling [calling.sh]
+                calling [calling.sh]
 
                 alignment [alignment.sh]
 
@@ -89,12 +93,12 @@ QUACk checks for existence of the working, bam and fastq directories, and genera
             sample...1
 
                 sample_analysis
+		
+		    qual [results of quality analysis]
+		    
+		    tmp [temporary files]
+		    
+		sample… 2
 
-                    qual [results of quality analysis]
-
-                    tmp [temporary files]
-
-            sample… 2
-
-                ...
+                    ...
 ---
