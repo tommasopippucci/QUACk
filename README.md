@@ -73,7 +73,6 @@ QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts 
 
 ### *PARAMETER* file, comma-delimited
 
----
 - **reference sequence fasta/fa files** (can be different reference sequences)
   - hg19,/archive/ngsbo/db/hg19/ucsc.hg19.fasta
   - GRCh38,/archive/ngsbo/db/GRCh38/hs38.fa
@@ -101,9 +100,28 @@ QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts 
 ---
 
 
-## Directory architecture
+## Directory architectures
 
-QUACk checks for existence of the working, bam and fastq directories, and generates a directory architecture to store output and temporary files. If the output folder does exist, QUACk generates a folder architecture as follows:
+QUACk assumes that there are *sample* directories, named as the sample name in the **sample file**, inside the *fastQ* directory as specified in the **parameter file**. Inside *sample* directories, QUACk will search for analysis input fastQ files.
+
+---
+
+    fastQ
+        
+	project
+	
+	    sample...1 [sample1 fastQ files]
+	    
+	    sample...2 [sample2 fastQ files]
+	    
+---
+
+QUACk checks for the existence of the working, bam and gvcf directories.
+
+Inside the *working* directory as specified in the **parameter file**, QUACk will generate a directory architecture where most final and all temporary analysis files will be located. First, QUACk will create a *project* directory. Inside this, every time it will be lauched QUACk will generate a new *project_analysis* directory flagged by the new analysis date and time. Inside every *project_analysis* directory there will be:
+- a *log* file containing analysis parameter specifications
+- a *bash* directory with *calling*, *alignment* and *quality* subdirectories each containing the *.sh* script pertaining to that part of the analysis
+- *sample* directories each containing as many *sample_analysis* directories as the *project_analysis* directories are, inside which there will be the *tmp* directory for placing temporary files and the *qual* directory for storing different final files of the quality checks.
 
 ---
 
@@ -130,4 +148,30 @@ QUACk checks for existence of the working, bam and fastq directories, and genera
 		sample… 2
 
                     ...
+---
+
+QUACk will also create a *project* directory in the *bam* and *gvcf* directories as specified in the **parameter file**, where respectively the final bam file and the gvcf file will be stored. While quality check and log files for every analysis will be mantained under the *working* directory architecture, final bam and gvcf files will be **OVERWRITTEN** at every new analysis.
+
+---
+
+    bam
+        
+	project
+	
+	    sample...1 [sample1 final bam file]
+	    
+	    sample...2 [sample1 final bam file]
+	    
+---
+
+---
+
+    gvcf
+        
+	project
+	
+	    sample...1 [sample1 gvcf file]
+	    
+	    sample...2 [sample1 gvcf file]
+	    
 ---
