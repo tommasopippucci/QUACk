@@ -25,6 +25,8 @@ Here is shown an example of how to run QUACk in order to set up an exome analysi
 - **GENCODE_coding.srt.merged.chr1_extended.bed**: extended bed file
 - **test**: folder containing sample subfolders with test fastQ files
 
-**!!! FASTA** file **MUST** be provided by the user
+**!!! FASTA** file **MUST** be provided by the user **!!!**
 
-**!!! known_sites** file **MUST** be provided by the user (in **test.param** a [ftp.broadinstitute.org/bundle/2.8/hg19/1000G_phase1.snps.high_confidence.hg19.sites.vcf] file is indicated as an example for a *known_sites* file)
+**!!! known_sites** file **MUST** be provided by the user **!!!**
+
+(in **test.param** a [ftp.broadinstitute.org/bundle/2.8/hg19/1000G_phase1.snps.high_confidence.hg19.sites.vcf] file is indicated as an example for a *known_sites* file)
