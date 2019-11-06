@@ -6,12 +6,13 @@ Here is shown an example of how to run QUACk in order to set an exome analysis p
 
     perl /PATH/TO/quack/quack.pl -sample_file test.sample -parameter_file test.param -reference hg19 -project test -threads 1 -fastq_extension fastq -fastq_suffix _001 -extended_bed _extended
 
-**Mandatory options**
+**Example files**
 
-        -sample_file <SAMPLE_FILE.sample> 
-        -parameter_file <PARAMETER_FILE.param> 
-        -reference <hg19|hg38|..> 
-        -project <PROJECT_FOLDER>
+- **test.sample**: example sample file
+- **test.param**: example parameter file
+- **GENCODE_coding.srt.merged.chr1_extended.bed**: extended bed file
+
+**!!!** FASTA file **MUST** be provided by the user
 	
 ---
 **Sample file** and **parameter file** are tab-delimited and comma-delimited files, and contain information about sample sequencing features and analysis parameters, respectively. 
