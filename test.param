@@ -1,0 +1,24 @@
+#reference sequence fasta/fa files
+hg19,/archive/ngsbo/db/hg19/ucsc.hg19.fasta
+GRCh38,/archive/ngsbo/db/GRCh38/hs38.fa
+hs37d5,/archive/ngsbo/db/hs37d5/hs37d5.fa
+#target bed file folder
+target_dir,/archive/ngsbo/db/regions/
+#target set bed file (MUST have a ".bed" extension, but MUST be written without ".bed" extension)
+target_set,GENCODE_coding.srt.merged
+#alignment algorithm commands
+bwa,bwa
+#SAM/BAM manipulation and calling algorithm commands
+samtools,samtools
+picard,picard
+gatk,gatk
+#(VCF) files with known sites of true variation
+known_sites,/archive/ngsbo/db/ftp.broadinstitute.org/bundle/2.8/hg19/1000G_phase1.snps.high_confidence.hg19.sites.vcf
+#working directory
+working_dir,/work/tommaso.pippucci/quack
+#fastQ directory
+fastq_dir,/archive/ngsbo/fastq/test_2samples/
+#BAM directory
+bam_dir,/archive/ngsbo/bam/
+#GVCF directory
+gvcf_dir,/archive/ngsbo/gvcf/

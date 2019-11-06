@@ -1,0 +1,5 @@
+Sample	FlowCell	Lane	Index	Enrichment	Target_Set	Library	Platform	Provider
+tp_143h100K	FCD2CHUACXX	8	AAAHAAA	SeqCap_EZ_Exome_v3_tiled	GENCODE_coding.srt.merged	PE100	Illumina	BGI
+tp_143h100K	FCD2HJGACXX	6	AAAHAAA	SeqCap_EZ_Exome_v3_tiled	GENCODE_coding.srt.merged	PE100	Illumina	BGI
+tp_148h100K	DCW97JN1	1	CGATGT	SeqCap_EZ_Exome_v3_tiled	GENCODE_coding.srt.merged	PE100	Illumina	BGI
+tp_148h100K	HISEQ5	1	CGATGT	SeqCap_EZ_Exome_v3_tiled	GENCODE_coding.srt.merged	PE100	Illumina	BGI
