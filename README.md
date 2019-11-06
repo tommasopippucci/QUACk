@@ -54,7 +54,7 @@ QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts 
 
 ### *SAMPLE* file, tab-delimited
 
-|Sample | FlowCell | Lane | Index | Enrichment | Target_Set | Library | Platform | Provider|
+|Sample | FlowCell | Lane | Index | Enrichment |Library | Platform | Provider|
 |---    |---       |---   |---    |---         |---      |---       |---      |
 |SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Library1 | Illumina |  Seq    |
 |SAMPLE1|  FCID    |2     |  GGAG |MedExome    |Library1 | Illumina |  Seq    |
@@ -112,11 +112,11 @@ QUACk assumes that there are a *project* directory and its *sample* subdirectory
 
     fastQ
         
-	project
+        project
 	
-	    sample...1 [sample1 fastQ files]
+            sample...1 [sample1 fastQ files]
 	    
-	    sample...2 [sample2 fastQ files]
+            sample...2 [sample2 fastQ files]
 	    
 ---
 
@@ -160,11 +160,11 @@ QUACk will also create a *project* directory in the *bam* and *gvcf* directories
 
     bam
         
-	project
+        project
 	
-	    sample...1 [sample1 final bam file]
+            sample...1 [sample1 final bam file]
 	    
-	    sample...2 [sample1 final bam file]
+            sample...2 [sample1 final bam file]
 	    
 ---
 
@@ -172,10 +172,10 @@ QUACk will also create a *project* directory in the *bam* and *gvcf* directories
 
     gvcf
         
-	project
+        project
 	
-	    sample...1 [sample1 gvcf file]
+            sample...1 [sample1 gvcf file]
 	    
-	    sample...2 [sample1 gvcf file]
+            sample...2 [sample1 gvcf file]
 	    
 ---
