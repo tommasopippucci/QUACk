@@ -30,6 +30,7 @@ QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts 
         -threads <default:1> 
         -fastq_extension <default:fastq.gz> 
         -fastq_suffix <default:>
+	-extended_bed <default:>
 	
 ---
 
@@ -40,6 +41,8 @@ QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts 
 **FastQ extension** is the term after the last dot in fastQ file name, the default term being *fastq.gz*.
 
 **FastQ suffix** is an optional term that can be placed before the last dot in fastQ file name, the default being the *empty string*.
+
+**Extended bed** is an optional term that can be useful to differentiate between the *bed* file with regular targets and a modified *bed* file where targets are extended to flanking regions. It may be used in defining variant call regions exceeding the exon borders. It is assumed that the extended bed name is in the format <target set bed file (as specified in **parameter file**><extended bed>.bed.
 
 ---
 
@@ -52,19 +55,18 @@ QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts 
 ### *SAMPLE* file, tab-delimited
 
 |Sample | FlowCell | Lane | Index | Enrichment | Target_Set | Library | Platform | Provider|
-|---    |---       |---   |---    |---         |---         |---      |---       |---      |
-|SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Gencode     |Library1 | Illumina |  Seq    |
-|SAMPLE1|  FCID    |2     |  GGAG |MedExome    |Gencode     |Library1 | Illumina |  Seq    |
-|SAMPLE2|  FCID    |3     |  AGAG |MedExome    |Gencode     |Library2 | Illumina |  Seq    |
-|SAMPLE3|  FCID    |2     |  TCAG |MedExome    |Gencode     |Library3 | Illumina |  Seq    |
+|---    |---       |---   |---    |---         |---      |---       |---      |
+|SAMPLE1|  FCID    |1     |  ACAG |MedExome    |Library1 | Illumina |  Seq    |
+|SAMPLE1|  FCID    |2     |  GGAG |MedExome    |Library1 | Illumina |  Seq    |
+|SAMPLE2|  FCID    |3     |  AGAG |MedExome    |Library2 | Illumina |  Seq    |
+|SAMPLE3|  FCID    |2     |  TCAG |MedExome    |Library3 | Illumina |  Seq    |
 
 ---
 - Sample: Sample Name
 - FlowCell: FlowCell ID
 - Lane: FlowCell Lane number
 - Index: Index Sequence
-- Enrichment: Target enrichment used (if used)
-- Target Set: Target set used in the analysis (can be different from Enrichment)
+- Enrichment: Target enrichment used
 - Library: Name of library performed
 - Platform: Sequencing platform used
 - Provider: Name of the sequencing provider
@@ -79,6 +81,8 @@ QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts 
   - hs37d5,/archive/ngsbo/db/hs37d5/hs37d5.fa
 - **wes target bed files folder** (complete folder path where target bed files are stored)
   - target_dir,/archive/ngsbo/db/regions/
+- **target set bed file** (it can be different from Enrichment specified in **sample file** and it **MUST** have a *.bed* extension, but its name **MUST** be written without *.bed* extension)
+target_set,GENCODE_coding.srt.merged
 - **alignment algorithm commands** (command-line command for aligner (no options, no arguments))
   - bwa,bwa
 - **SAM/BAM manipulation and calling algorithm commands** (command-line command for samtools, picard, gatk, ... (no options, no arguments))
