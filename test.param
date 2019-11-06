@@ -1,11 +1,11 @@
 #reference sequence fasta/fa files
-hg19,/archive/ngsbo/db/hg19/ucsc.hg19.fasta
-GRCh38,/archive/ngsbo/db/GRCh38/hs38.fa
-hs37d5,/archive/ngsbo/db/hs37d5/hs37d5.fa
+hg19,/PATH/TO/FASTA/hg19/ucsc.hg19.fasta
+GRCh38,/PATH/TO/FASTA/GRCh38/hs38.fa
+hs37d5,/PATH/TO/FASTA/hs37d5/hs37d5.fa
 #target bed file folder
-target_dir,/archive/ngsbo/db/regions/
+target_dir,/PATH/TO/bed/
 #target set bed file (MUST have a ".bed" extension, but MUST be written without ".bed" extension)
-target_set,GENCODE_coding.srt.merged
+target_set,GENCODE_coding.srt.merged.chr1
 #alignment algorithm commands
 bwa,bwa
 #SAM/BAM manipulation and calling algorithm commands
@@ -13,12 +13,12 @@ samtools,samtools
 picard,picard
 gatk,gatk
 #(VCF) files with known sites of true variation
-known_sites,/archive/ngsbo/db/ftp.broadinstitute.org/bundle/2.8/hg19/1000G_phase1.snps.high_confidence.hg19.sites.vcf
+known_sites,/PATH/TO/KNOWNSITES/ftp.broadinstitute.org/bundle/2.8/hg19/1000G_phase1.snps.high_confidence.hg19.sites.vcf
 #working directory
-working_dir,/work/tommaso.pippucci/quack
+working_dir,/PATH/TO/WORK/quack
 #fastQ directory
-fastq_dir,/archive/ngsbo/fastq/test_2samples/
+fastq_dir,/PATH/TO/fastq/test/
 #BAM directory
-bam_dir,/archive/ngsbo/bam/
+bam_dir,/PATH/TO/bam/
 #GVCF directory
-gvcf_dir,/archive/ngsbo/gvcf/
+gvcf_dir,/PATH/TO/gvcf/
