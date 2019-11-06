@@ -30,7 +30,7 @@ QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts 
         -threads <default:1> 
         -fastq_extension <default:fastq.gz> 
         -fastq_suffix <default:>
-	-extended_bed <default:>
+        -extended_bed <default:>
 	
 ---
 
@@ -42,7 +42,7 @@ QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts 
 
 **FastQ suffix** is an optional term that can be placed before the last dot in fastQ file name, the default being the *empty string*.
 
-**Extended bed** is an optional term that can be useful to differentiate between the *bed* file with regular targets and a modified *bed* file where targets are extended to flanking regions. It may be used in defining variant call regions exceeding the exon borders. It is assumed that the extended bed name is in the format <target set bed file (as specified in **parameter file**><extended bed>.bed.
+**Extended bed** is an optional term that can be useful to differentiate between the *bed* file with regular targets and a modified *bed* file where targets are extended to flanking regions. It may be used in defining variant call regions exceeding the exon borders. It is assumed that the extended bed name is in the format <target set bed file (as specified in **parameter file**>\<extended bed>.bed.
 
 ---
 
