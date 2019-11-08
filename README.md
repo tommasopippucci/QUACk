@@ -1,6 +1,6 @@
 # QUACk
 
-QUACk (QUality Alignment and Calling) Perl script generating bash (.sh) scripts to perform three-steps NGS analysis (1. Read quality; 2. Alignment and alignment statistics; 3. Creation of gVCF)
+QUACk (QUality Alignment and Calling) Perl script generates three bash (.sh) scripts to perform three-steps NGS analysis (1. Read quality; 2. Alignment and alignment statistics; 3. Creation of gVCF). It also prepares a direcotry architecture to perform the analyses, place temporary files and store analysis results. QUACk performs single-sample analyses for as many samples as there are in a project, providing as final products files for quality checks and statistics, a duplicate-marked, quality-recalibrated *BAM* file and a *gVCF* file for each processed sample. 
 
 ## Usage
 
