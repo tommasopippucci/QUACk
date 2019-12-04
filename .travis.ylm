@@ -1,0 +1,16 @@
+language: perl
+perl:
+  - "5.26"
+
+before_install :
+  - build-perl
+  - perl -V
+
+install:
+  - cpan-install Data::Dumper
+  - cpan-install List::MoreUtils
+  - cpan-install Getopt::Long
+  - cpan-install Path::Tiny
+  
+ script:
+  - quack.pl
