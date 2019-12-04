@@ -12,6 +12,7 @@ bwa,bwa
 samtools,samtools
 picard,picard
 gatk,gatk
+gatk3,gatk3
 #(VCF) files with known sites of true variation
 known_sites,/PATH/TO/KNOWNSITES/ftp.broadinstitute.org/bundle/2.8/hg19/1000G_phase1.snps.high_confidence.hg19.sites.vcf
 #working directory
@@ -22,3 +23,5 @@ fastq_dir,/PATH/TO/fastq/test/
 bam_dir,/PATH/TO/bam/
 #GVCF directory
 gvcf_dir,/PATH/TO/gvcf/
+#refseq file indicating genes to generate gene-based coverage statistics (gatk3)
+refseq_genes,/PATH/TO/geneTrack.refSeq.sorted.txt
