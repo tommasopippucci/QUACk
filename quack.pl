@@ -19,7 +19,7 @@ my($sample_file); my($param_file); my($threads)=1; my($project); my($ref); my($a
                                             #Declaring sample sheet $ variables
 my($sample); my($flow_cell); my($lane); my($index); my($enrichment); my($target_set); my($library); my($platform); my($provider);
                                             #Declaring parameter file $ variables
-my($ref_file); my($target_dir); my($align_cmd); my($samtools_cmd); my($picard_cmd); my($gatk_cmd); my($working_dir); my($fastq_dir); my($gvcf_dir); my($bam_dir); my($operator); my($id); #my($known_sites);
+my($ref_file); my($target_dir); my($align_cmd); my($samtools_cmd); my($picard_cmd); my($gatk_cmd); my($gatk3_cmd); my($working_dir); my($fastq_dir); my($gvcf_dir); my($bam_dir); my($operator); my($id); my($refseq_genes);
                                             #Declaring date and time $ variables
 my($second,$minute,$hour,$monthday,$month,$year,$weekday,$yearday) = localtime(time); my($datetime);
                                             #Declaring user name $ variables
@@ -108,7 +108,14 @@ while (<PARAM>)
    if ($line[0] eq "gatk")
       {
       $gatk_cmd=$line[1];
-      }   
+   if ($line[0] eq "gatk3")
+      {
+      $gatk3_cmd=$line[1];
+      }
+   if ($line[0] eq "refseq_genes")
+      {
+      $refseq_genes=$line[1];
+      }
    }
    
 close PARAM;
@@ -172,6 +179,7 @@ mkdir("$working_dir/$project/$project\_$datetime/bash/") or die $!;
 mkdir("$working_dir/$project/$project\_$datetime/bash/quality/") or die $!;
 mkdir("$working_dir/$project/$project\_$datetime/bash/alignment/") or die $!;
 mkdir("$working_dir/$project/$project\_$datetime/bash/calling/") or die $!;
+mkdir("$working_dir/$project/$project\_$datetime/bash/coverage/") or die $!;
 
 open LOG, "+>$working_dir/$project/$project\_$datetime/$project\_$datetime.log" or die $!;
 
@@ -212,10 +220,13 @@ foreach $sample (keys %sample_info)
    open QUALITY, "+>$working_dir/$project/$project\_$datetime/bash/quality/pipeline_quality\_$sample.$datetime.sh" or die $!;
    open ALIGNMENT, "+>$working_dir/$project/$project\_$datetime/bash/alignment/pipeline_alignment\_$sample.$datetime.sh" or die $!;
    open CALLING, "+>$working_dir/$project/$project\_$datetime/bash/calling/pipeline_calling\_$sample.$datetime.sh" or die $!;
+   open COVERAGE, "+>$working_dir/$project/$project\_$datetime/bash/coverage/pipeline_coverage\_$sample.$datetime.sh" or die $!;
    
    print QUALITY  "#!/bin/bash\n\n";
    print ALIGNMENT "#!/bin/bash\n\n";
-   print CALLING "#!/bin/bash\n\n"; 
+   print CALLING "#!/bin/bash\n\n";
+   print COVERAGE "#!/bin/bash\n\n";
+   
    foreach $id ( sort keys %{ $sample_info{$sample} } )
       {
       print LOG "Enrichment kit used for $id: $sample_info{$sample}{$id}[$enrichment]\n";
@@ -301,13 +312,16 @@ foreach $sample (keys %sample_info)
 
    print CALLING "#Generating gVCF $sample.g.VCF from BAM file $sample.markdup.recal.sort.bam with GATK\n\n";
 
-   print CALLING "$gatk_cmd HaplotypeCaller -R $ref_file -I $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam --emit-ref-confidence GVCF --dbsnp $known_sites -L $target_dir/$target_set$bed_ext.bed -O $gvcf_dir/$project/$sample/$sample.g.vcf\n";
+   print CALLING "$gatk_cmd HaplotypeCaller -R $ref_file -I $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam --emit-ref-confidence GVCF --dbsnp $known_sites[0] -L $target_dir/$target_set$bed_ext.bed -O $gvcf_dir/$project/$sample/$sample.g.vcf\n";
+   
+   print COVERAGE "$gatk3_cmd -T DepthOfCoverage -R $ref_file -I $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam -L $target_dir/$target_set.bed -geneList $refseq_genes -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.coverage -omitBaseOutput -ct 20\n";
    
    @bam = ();
 
    close QUALITY;
    close ALIGNMENT;
    close CALLING;
+   close COVERAGE;
    }
    
 close LOG;
