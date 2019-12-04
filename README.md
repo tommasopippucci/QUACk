@@ -1,6 +1,6 @@
 # QUACk
 
-QUACk (QUality Alignment and Calling) Perl script generates three bash (.sh) scripts to perform three-steps NGS analysis (1. Read quality; 2. Alignment and alignment statistics; 3. Creation of gVCF). It also prepares a direcotry architecture to perform the analyses, place temporary files and store analysis results. QUACk performs single-sample analyses for as many samples as there are in a project, providing as final products files for quality checks and statistics, a duplicate-marked, quality-recalibrated *BAM* file and a *gVCF* file for each processed sample. 
+QUACk (QUality Alignment and Calling) Perl script generates four bash (.sh) scripts to perform three-branched NGS analysis (1. Read quality; 2. Alignment and alignment statistics; 3. Creation of gVCF). It also prepares a direcotry architecture to perform the analyses, place temporary files and store analysis results. QUACk performs single-sample analyses for as many samples as there are in a project, providing as final products files for quality checks and statistics, a duplicate-marked, quality-recalibrated *BAM* file and a *gVCF* file for each processed sample. 
 
 ## Usage
 
@@ -89,8 +89,9 @@ target_set,GENCODE_coding.srt.merged
   - samtools,samtools
   - picard,picard
   - gatk,gatk
-- **(VCF) files with known sites of true variation** (dbSNP (or other) true variation sites to be used)
-  - known_sites,/archive/ngsbo/db/ftp.broadinstitute.org/bundle/2.8/hg19/1000G_phase1.snps.high_confidence.hg19.sites.vcf
+  - gatk3,gatk3
+- **list of (VCF) files with known sites of true variation** (dbSNP (or other) true variation sites to be used)
+  - known_sites,..., /archive/ngsbo/db/ftp.broadinstitute.org/bundle/2.8/hg19/1000G_phase1.snps.high_confidence.hg19.sites.vcf, ...
 - **working directory** (absolute path to directory where tmp and quality files will be stored)
   - working_dir,/work/common/pipeline_wes/
 - **fastQ directory** (absolute path to directory where fastQ files are located)
@@ -99,6 +100,8 @@ target_set,GENCODE_coding.srt.merged
   - bam_dir,/archive/ngsbo/bam/
 - **GVCF directory** (absolute path to directory where gVCF files will be stored)
   - gvcf_dir,/archive/ngsbo/gvcf/
+- **file with refseq genes** (absolute path to refseq gene file)
+  - refseq_genes,/archive/ngsbo/db/geneTrack.refSeq.sorted.txt
 
 
 ---
