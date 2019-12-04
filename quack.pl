@@ -19,13 +19,13 @@ my($sample_file); my($param_file); my($threads)=1; my($project); my($ref); my($a
                                             #Declaring sample sheet $ variables
 my($sample); my($flow_cell); my($lane); my($index); my($enrichment); my($target_set); my($library); my($platform); my($provider);
                                             #Declaring parameter file $ variables
-my($ref_file); my($target_dir); my($align_cmd); my($samtools_cmd); my($picard_cmd); my($gatk_cmd); my($working_dir); my($fastq_dir); my($gvcf_dir); my($bam_dir); my($operator); my($id); my($known_sites);
+my($ref_file); my($target_dir); my($align_cmd); my($samtools_cmd); my($picard_cmd); my($gatk_cmd); my($working_dir); my($fastq_dir); my($gvcf_dir); my($bam_dir); my($operator); my($id); #my($known_sites);
                                             #Declaring date and time $ variables
 my($second,$minute,$hour,$monthday,$month,$year,$weekday,$yearday) = localtime(time); my($datetime);
                                             #Declaring user name $ variables
 my $username = $ENV{LOGNAME} || getpwuid($<) || $ENV{USER};
                                             #Declaring @ variables
-my(@line) = (); my(@month_names)  = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec); my(@bam) = ();
+my(@line) = (); my(@month_names)  = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec); my(@bam) = (); my(@known_sites) = ();
                                             #Declaring % variables
 my(%sample_info);
 
@@ -95,7 +95,7 @@ while (<PARAM>)
       }      
    if ($line[0] eq "known_sites")
       {
-      $known_sites=$line[1];
+      @known_sites=@line[1..$#line];
       }
    if ($line[0] eq "samtools")
       {
@@ -285,7 +285,12 @@ foreach $sample (keys %sample_info)
    
    print CALLING "#Applying GATK Base Quality Score Recalibration on BAM file $sample.sort.markdup.bam, sorting and indexing BAM file $sample.sort.markdup.recal.bam\n\n";
    
-   print CALLING "$gatk_cmd BaseRecalibrator -I $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam -O $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal_data.table -R $ref_file --known-sites $known_sites\n";
+   print CALLING "$gatk_cmd BaseRecalibrator -I $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam -O $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal_data.table -R $ref_file";
+   for $i (0..$#known_sites)
+      {
+      print CALLING " --known-sites $known_sites[$i]";
+      }
+   print "\n";
    print CALLING "$gatk_cmd ApplyBQSR -R $ref_file -I $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam --bqsr-recal-file $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal_data.table -O $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal.bam\n";
    print CALLING "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam\n";
    print CALLING "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bai\n";
