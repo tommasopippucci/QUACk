@@ -309,8 +309,8 @@ foreach $sample (keys %sample_info)
       print CALLING " --known-sites $known_sites[$i]";
       }
    print "\n";
-#in ApplyQSR aggiunto \n da Fede&Marta
-   print CALLING "\n $gatk_cmd ApplyBQSR -R $ref_file -I $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam --bqsr-recal-file $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal_data.table -O $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal.bam\n";
+
+   print CALLING "$gatk_cmd ApplyBQSR -R $ref_file -I $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam --bqsr-recal-file $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal_data.table -O $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal.bam\n";
    print CALLING "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam\n";
    print CALLING "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bai\n";
    print CALLING "$samtools_cmd sort -T $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/ -o $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal.bam\n";
@@ -323,12 +323,9 @@ foreach $sample (keys %sample_info)
 
    print CALLING "#Generating gVCF $sample.g.VCF from BAM file $sample.markdup.recal.sort.bam with GATK\n\n";
 
-#Fede&Marta: rimossa estensione .bed da opzione -L nel segunete comando perche ridondante
-#   print CALLING "$gatk_cmd HaplotypeCaller -R $ref_file -I $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam --emit-ref-confidence GVCF -L $target_dir/$target_set$bed_ext.bed -O $gvcf_dir/$project/$sample/$sample.g.vcf\n";
-   print CALLING "$gatk_cmd HaplotypeCaller -R $ref_file -I $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam --emit-ref-confidence GVCF -L $target_dir/$target_set$bed_ext -O $gvcf_dir/$project/$sample/$sample.g.vcf\n";
-#Fede&Marta: rimossa estensione .bed da opzione -L nel segunete comando perche ridondante
-#   print COVERAGE "$gatk3_cmd -T DepthOfCoverage -R $ref_file -I $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam -L $target_dir/$target_set.bed -geneList $refseq_genes -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.coverage -omitBaseOutput -ct 20\n";
-    print COVERAGE "$gatk3_cmd -T DepthOfCoverage -R $ref_file -I $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam -L $target_dir/$target_set -geneList $refseq_genes -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.coverage -omitBaseOutput -ct 20\n";
+   print CALLING "$gatk_cmd HaplotypeCaller -R $ref_file -I $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam --emit-ref-confidence GVCF -L $target_dir/$target_set$bed_ext.bed -O $gvcf_dir/$project/$sample/$sample.g.vcf\n";
+   
+   print COVERAGE "$gatk3_cmd -T DepthOfCoverage -R $ref_file -I $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam -L $target_dir/$target_set.bed -geneList $refseq_genes -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.coverage -omitBaseOutput -ct 20\n";
    
    @bam = ();
 
