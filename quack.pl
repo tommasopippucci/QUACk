@@ -234,20 +234,13 @@ foreach $sample (keys %sample_info)
    foreach $id ( sort keys %{ $sample_info{$sample} } )
       {
       print LOG "Enrichment kit used for $id: $sample_info{$sample}{$id}[$enrichment]\n";
-      print QUALITY "#Performing fastQC analysis on fastQ files\n\n";
-#Fede&Marta: tolto /$sample/ da pwd nel comando seguente:      
-#      print QUALITY "fastqc -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/ $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext\n";
-      print QUALITY "fastqc -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/ $fastq_dir/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext\n";
-#Fede&Marta: tolto /$sample/ da pwd nel comando seguente:
-#      print QUALITY "fastqc -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/ $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext\n";
-      print QUALITY "fastqc -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/ $fastq_dir/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext\n";
+      print QUALITY "#Performing fastQC analysis on fastQ files\n\n";   
+      print QUALITY "fastqc -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/ $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext\n";
+      print QUALITY "fastqc -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/ $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext\n";
       
-      print ALIGNMENT "#Creating SAM file $id\_$sample_info{$sample}{$id}[$index].sam by aligning reads from fastQ files to reference genome $ref using $align\n\n";
-#Fede&Marta: tolto /$sample/ da pwd nel comando seguente:              
-#      print ALIGNMENT "$align_cmd mem -M -t $threads -R \'\@RG\\tID:$sample\_$sample_info{$sample}{$id}[$lane]\_$sample_info{$sample}{$id}[$flow_cell]\\tSM:$sample\\tDT:$datetime\\tLB:$sample_info{$sample}{$id}[$library]\\tPL:$sample_info{$sample}{$id}[$platform]\\tCN:$sample_info{$sample}{$id}[$provider]\' $ref_file $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sam\n\n";
-      print ALIGNMENT "$align_cmd mem -M -t $threads -R \'\@RG\\tID:$sample\_$sample_info{$sample}{$id}[$lane]\_$sample_info{$sample}{$id}[$flow_cell]\\tSM:$sample\\tDT:$datetime\\tLB:$sample_info{$sample}{$id}[$library]\\tPL:$sample_info{$sample}{$id}[$platform]\\tCN:$sample_info{$sample}{$id}[$provider]\' $ref_file $fastq_dir/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext $fastq_dir/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sam\n\n";      
+      print ALIGNMENT "#Creating SAM file $id\_$sample_info{$sample}{$id}[$index].sam by aligning reads from fastQ files to reference genome $ref using $align\n\n";           
+      print ALIGNMENT "$align_cmd mem -M -t $threads -R \'\@RG\\tID:$sample\_$sample_info{$sample}{$id}[$lane]\_$sample_info{$sample}{$id}[$flow_cell]\\tSM:$sample\\tDT:$datetime\\tLB:$sample_info{$sample}{$id}[$library]\\tPL:$sample_info{$sample}{$id}[$platform]\\tCN:$sample_info{$sample}{$id}[$provider]\' $ref_file $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sam\n\n";
       print ALIGNMENT "#Converting SAM file $id\_$sample_info{$sample}{$id}[$index].sam into BAM file $id\_$sample_info{$sample}{$id}[$index].bam, sorting and indexing BAM file $id\_$sample_info{$sample}{$id}[$index].sort.bam\n\n";
-      
       print ALIGNMENT "$samtools_cmd view -btS --threads $threads -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sam\n";
       print ALIGNMENT "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sam\n";
       print ALIGNMENT "$samtools_cmd sort -T $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/ -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam\n";
