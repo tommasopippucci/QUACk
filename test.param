@@ -22,3 +22,5 @@ fastq_dir,/PATH/TO/fastq/test/
 bam_dir,/PATH/TO/bam/
 #GVCF directory
 gvcf_dir,/PATH/TO/gvcf/
+#refseq file indicating genes to generate gene-based coverage statistics (gatk3)
+refseq_genes,/archive/ngsbo/db/regions/geneTrack.refSeq.sorted.txt
