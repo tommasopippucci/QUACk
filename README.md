@@ -50,7 +50,7 @@ QUACk (QUality Alignment and Calling) Perl script generates three bash (.sh) scr
 
 ### *FastQ* files, having the following mandatory filename form:
 
-<Sample_Name>_L<Lane_Number>_<FlowCell_ID>_<Index_Sequence>_R<1(forward)|2(reverse)><fastQ_suffix>.<fastQ_extension>
+<Sample_Name>_<FlowCell_ID>_L<Lane_Number>_<Index_Sequence>_R<1(forward)|2(reverse)><fastQ_suffix>.<fastQ_extension>
 
 ### *SAMPLE* file, tab-delimited
 
@@ -99,6 +99,8 @@ target_set,GENCODE_coding.srt.merged
   - bam_dir,/archive/ngsbo/bam/
 - **GVCF directory** (absolute path to directory where gVCF files will be stored)
   - gvcf_dir,/archive/ngsbo/gvcf/
+- **RefSeq file** (absolute path to file used to generate gene-based coverage statistics (with gatk3))
+  - refseq_genes,/archive/ngsbo/db/regions/geneTrack.refSeq.sorted.txt
 
 
 ---
