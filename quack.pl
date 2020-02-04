@@ -301,7 +301,7 @@ foreach $sample (keys %sample_info)
       {
       print CALLING " --known-sites $known_sites[$i]";
       }
-   print "\n";
+   print CALLING "\n";
 
    print CALLING "$gatk_cmd ApplyBQSR -R $ref_file -I $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam --bqsr-recal-file $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal_data.table -O $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal.bam\n";
    print CALLING "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam\n";
