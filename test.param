@@ -12,6 +12,7 @@ bwa,bwa
 samtools,samtools
 picard,picard
 gatk,gatk
+gatk3,gatk3
 #(VCF) files with known sites of true variation
 known_sites,/PATH/TO/KNOWNSITES/ftp.broadinstitute.org/bundle/2.8/hg19/1000G_phase1.snps.high_confidence.hg19.sites.vcf
 #working directory
