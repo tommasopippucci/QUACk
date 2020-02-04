@@ -105,6 +105,16 @@ target_set,GENCODE_coding.srt.merged
 
 ---
 
+*Examples of known_sites files:* 
+1000G_phase1.snps.high_confidence.hg19.sites.vcf
+1000G_phase1.indels.hg19.sites.vcf
+Mills_and_1000G_gold_standard.indels.hg19.sites.vcf
+dbsnp_138.hg19.excluding_sites_after_129.vcf
+1000G_omni2.5.hg19.sites.vcf
+hapmap_3.3.hg19.sites.vcf
+
+---
+
 
 ## Directory architectures
 
