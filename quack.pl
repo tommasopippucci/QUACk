@@ -181,8 +181,7 @@ else
 mkdir("$working_dir/$project/$project\_$datetime") or die $!;
 mkdir("$working_dir/$project/$project\_$datetime/bash/") or die $!;
 mkdir("$working_dir/$project/$project\_$datetime/bash/quality/") or die $!;
-mkdir("$working_dir/$project/$project\_$datetime/bash/alignment/") or die $!;
-mkdir("$working_dir/$project/$project\_$datetime/bash/calling/") or die $!;
+mkdir("$working_dir/$project/$project\_$datetime/bash/aligncall/") or die $!;
 mkdir("$working_dir/$project/$project\_$datetime/bash/coverage/") or die $!;
 
 open LOG, "+>$working_dir/$project/$project\_$datetime/$project\_$datetime.log" or die $!;
@@ -232,7 +231,9 @@ foreach $sample (keys %sample_info)
    foreach $id ( sort keys %{ $sample_info{$sample} } )
       {
       print LOG "Enrichment kit used for $id: $sample_info{$sample}{$id}[$enrichment]\n";
-      print QUALITY "#Performing fastQC analysis on fastQ files\n\n";   
+      print QUALITY "#Performing fastQC analysis on fastQ files\n\n";
+      print LOG "fastqc -v\n";
+      print 
       print QUALITY "fastqc -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/ $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext\n";
       print QUALITY "fastqc -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/ $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext\n";
       
