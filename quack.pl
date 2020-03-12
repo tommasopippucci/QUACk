@@ -222,13 +222,11 @@ foreach $sample (keys %sample_info)
    mkdir ("$working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/") or die $!;
 
    open QUALITY, "+>$working_dir/$project/$project\_$datetime/bash/quality/pipeline_quality\_$sample.$datetime.sh" or die $!;
-   open ALIGNMENT, "+>$working_dir/$project/$project\_$datetime/bash/alignment/pipeline_alignment\_$sample.$datetime.sh" or die $!;
-   open CALLING, "+>$working_dir/$project/$project\_$datetime/bash/calling/pipeline_calling\_$sample.$datetime.sh" or die $!;
+   open ALIGNCALL, "+>$working_dir/$project/$project\_$datetime/bash/aligncall/pipeline_aligncall\_$sample.$datetime.sh" or die $!;
    open COVERAGE, "+>$working_dir/$project/$project\_$datetime/bash/coverage/pipeline_coverage\_$sample.$datetime.sh" or die $!;
    
    print QUALITY  "#!/bin/bash\n\n";
-   print ALIGNMENT "#!/bin/bash\n\n";
-   print CALLING "#!/bin/bash\n\n";
+   print ALIGNCALL "#!/bin/bash\n\n";
    print COVERAGE "#!/bin/bash\n\n";
    
    foreach $id ( sort keys %{ $sample_info{$sample} } )
@@ -238,93 +236,92 @@ foreach $sample (keys %sample_info)
       print QUALITY "fastqc -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/ $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext\n";
       print QUALITY "fastqc -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/ $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext\n";
       
-      print ALIGNMENT "#Creating SAM file $id\_$sample_info{$sample}{$id}[$index].sam by aligning reads from fastQ files to reference genome $ref using $align\n\n";           
-      print ALIGNMENT "$align_cmd mem -M -t $threads -R \'\@RG\\tID:$sample\_$sample_info{$sample}{$id}[$lane]\_$sample_info{$sample}{$id}[$flow_cell]\\tSM:$sample\\tDT:$datetime\\tLB:$sample_info{$sample}{$id}[$library]\\tPL:$sample_info{$sample}{$id}[$platform]\\tCN:$sample_info{$sample}{$id}[$provider]\' $ref_file $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sam\n\n";
-      print ALIGNMENT "#Converting SAM file $id\_$sample_info{$sample}{$id}[$index].sam into BAM file $id\_$sample_info{$sample}{$id}[$index].bam, sorting and indexing BAM file $id\_$sample_info{$sample}{$id}[$index].sort.bam\n\n";
-      print ALIGNMENT "$samtools_cmd view -btS --threads $threads -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sam\n";
-      print ALIGNMENT "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sam\n";
-      print ALIGNMENT "$samtools_cmd sort -T $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/ -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam\n";
-      print ALIGNMENT "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam\n";
-      print ALIGNMENT "$samtools_cmd index $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sort.bam\n\n";
+      print ALIGNCALL "#Creating SAM file $id\_$sample_info{$sample}{$id}[$index].sam by aligning reads from fastQ files to reference genome $ref using $align\n\n";           
+      print ALIGNCALL "$align_cmd mem -M -t $threads -R \'\@RG\\tID:$sample\_$sample_info{$sample}{$id}[$lane]\_$sample_info{$sample}{$id}[$flow_cell]\\tSM:$sample\\tDT:$datetime\\tLB:$sample_info{$sample}{$id}[$library]\\tPL:$sample_info{$sample}{$id}[$platform]\\tCN:$sample_info{$sample}{$id}[$provider]\' $ref_file $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sam\n\n";
+      print ALIGNCALL "#Converting SAM file $id\_$sample_info{$sample}{$id}[$index].sam into BAM file $id\_$sample_info{$sample}{$id}[$index].bam, sorting and indexing BAM file $id\_$sample_info{$sample}{$id}[$index].sort.bam\n\n";
+      print ALIGNCALL "$samtools_cmd view -btS --threads $threads -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sam\n";
+      print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sam\n";
+      print ALIGNCALL "$samtools_cmd sort -T $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/ -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam\n";
+      print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam\n";
+      print ALIGNCALL "$samtools_cmd index $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sort.bam\n\n";
       $bam = $working_dir."/".$project."/".$project."_".$datetime."/".$sample."/".$sample."_".$datetime."/tmp/".$id."_".$sample_info{$sample}{$id}[$index].".sort.bam";
       push @bam, $bam;
       }
    if (scalar @bam>1)
       {
-      print ALIGNMENT "#Merging multiple BAM file into BAM file $sample\_$datetime/tmp/$sample.bam, sorting and indexing $sample.sort.bam\n\n";
+      print ALIGNCALL "#Merging multiple BAM file into BAM file $sample\_$datetime/tmp/$sample.bam, sorting and indexing $sample.sort.bam\n\n";
       
-      print ALIGNMENT "$samtools_cmd merge $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.bam";
+      print ALIGNCALL "$samtools_cmd merge $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.bam";
       for $i (0..$#bam)
          {
-         print ALIGNMENT " $bam[$i]";
+         print ALIGNCALL " $bam[$i]";
          }
-      print ALIGNMENT "\n";
+      print ALIGNCALL "\n";
       for $i (0..$#bam)
          {
-         print ALIGNMENT "rm $bam[$i]\n";
-         print ALIGNMENT "rm $bam[$i].bai\n";
+         print ALIGNCALL "rm $bam[$i]\n";
+         print ALIGNCALL "rm $bam[$i].bai\n";
          }
-      print ALIGNMENT "$samtools_cmd sort -T $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/ -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.bam\n";
-      print ALIGNMENT "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.bam\n";
-      print ALIGNMENT "$samtools_cmd index $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam\n\n";
+      print ALIGNCALL "$samtools_cmd sort -T $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/ -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.bam\n";
+      print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.bam\n";
+      print ALIGNCALL "$samtools_cmd index $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam\n\n";
       }
    elsif (scalar @bam == 1)
       {
-      print ALIGNMENT "#Converting sorted BAM file name into $sample.sort.bam\n\n";
+      print ALIGNCALL "#Converting sorted BAM file name into $sample.sort.bam\n\n";
       
-      print ALIGNMENT "mv $bam[0] $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam\n";
-      print ALIGNMENT "$samtools_cmd index $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam\n\n";
+      print ALIGNCALL "mv $bam[0] $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam\n";
+      print ALIGNCALL "$samtools_cmd index $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam\n\n";
       }
    else
       {
       die "No BAM file. Abort!\n"
       }
 
-   print ALIGNMENT "#Marking duplicates in BAM file $sample.sort.bam\n\n";
+   print ALIGNCALL "#Marking duplicates in BAM file $sample.sort.bam\n\n";
    
-   print ALIGNMENT "$picard_cmd MarkDuplicates I=$working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam O=$working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam METRICS_FILE=$working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.sort.markdup.stats CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\n\n";
-   print ALIGNMENT "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam\n";
-   print ALIGNMENT "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam.bai\n";
+   print ALIGNCALL "$picard_cmd MarkDuplicates I=$working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam O=$working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam METRICS_FILE=$working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.sort.markdup.stats CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\n\n";
+   print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam\n";
+   print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam.bai\n";
    
-   print ALIGNMENT "#Producing Samtools flag statistics for BAM file $sample.sort.markdup.bam\n\n";
+   print ALIGNCALL "#Producing Samtools flag statistics for BAM file $sample.sort.markdup.bam\n\n";
    
-   print ALIGNMENT "$samtools_cmd flagstat $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.sort.markdup.flagstat\n\n";
+   print ALIGNCALL "$samtools_cmd flagstat $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.sort.markdup.flagstat\n\n";
    
-   print ALIGNMENT "#Validating BAM file $sample.sort.bam with Picard\n\n";
+   print ALIGNCALL "#Validating BAM file $sample.sort.bam with Picard\n\n";
    
-   print ALIGNMENT "$picard_cmd ValidateSamFile I=$working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam MODE=SUMMARY > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.sort.markdup.validate\n\n";
+   print ALIGNCALL "$picard_cmd ValidateSamFile I=$working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam MODE=SUMMARY > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.sort.markdup.validate\n\n";
    
-   print CALLING "#Applying GATK Base Quality Score Recalibration on BAM file $sample.sort.markdup.bam, sorting and indexing BAM file $sample.sort.markdup.recal.bam\n\n";
+   print ALIGNCALL "#Applying GATK Base Quality Score Recalibration on BAM file $sample.sort.markdup.bam, sorting and indexing BAM file $sample.sort.markdup.recal.bam\n\n";
    
-   print CALLING "$gatk_cmd BaseRecalibrator -I $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam -O $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal_data.table -R $ref_file";
+   print ALIGNCALL "$gatk_cmd BaseRecalibrator -I $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam -O $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal_data.table -R $ref_file";
    for $i (0..$#known_sites)
       {
-      print CALLING " --known-sites $known_sites[$i]";
+      print ALIGNCALL " --known-sites $known_sites[$i]";
       }
-   print CALLING "\n";
+   print ALIGNCALL "\n";
 
-   print CALLING "$gatk_cmd ApplyBQSR -R $ref_file -I $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam --bqsr-recal-file $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal_data.table -O $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal.bam\n";
-   print CALLING "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam\n";
-   print CALLING "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bai\n";
-   print CALLING "$samtools_cmd sort -T $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/ -o $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal.bam\n";
-   print CALLING "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal.bam\n";
-   print CALLING "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal.bai\n";
+   print ALIGNCALL "$gatk_cmd ApplyBQSR -R $ref_file -I $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam --bqsr-recal-file $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal_data.table -O $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal.bam\n";
+   print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam\n";
+   print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bai\n";
+   print ALIGNCALL "$samtools_cmd sort -T $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/ -o $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal.bam\n";
+   print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal.bam\n";
+   print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal.bai\n";
 #modificato da Fede&Marta
-   print CALLING "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal_data.table\n";
+   print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal_data.table\n";
 ###############################
-   print CALLING "$samtools_cmd index $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam\n\n";
+   print ALIGNCALL "$samtools_cmd index $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam\n\n";
 
-   print CALLING "#Generating gVCF $sample.g.VCF from BAM file $sample.markdup.recal.sort.bam with GATK\n\n";
+   print ALIGNCALL "#Generating gVCF $sample.g.VCF from BAM file $sample.markdup.recal.sort.bam with GATK\n\n";
 
-   print CALLING "$gatk_cmd HaplotypeCaller -R $ref_file -I $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam --emit-ref-confidence GVCF -L $target_dir/$target_set$bed_ext.bed -O $gvcf_dir/$project/$sample/$sample.g.vcf\n";
+   print ALIGNCALL "$gatk_cmd HaplotypeCaller -R $ref_file -I $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam --emit-ref-confidence GVCF -L $target_dir/$target_set$bed_ext.bed -O $gvcf_dir/$project/$sample/$sample.g.vcf\n";
    
    print COVERAGE "$gatk3_cmd -T DepthOfCoverage -R $ref_file -I $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam -L $target_dir/$target_set.bed -geneList $refseq_genes -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.coverage -omitBaseOutput -ct 20\n";
    
    @bam = ();
 
    close QUALITY;
-   close ALIGNMENT;
-   close CALLING;
+   close ALIGNCALL;
    close COVERAGE;
    }
    
