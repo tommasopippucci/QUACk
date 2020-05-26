@@ -237,15 +237,13 @@ foreach $sample (keys %sample_info)
       print QUALITY "fastqc -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/ $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext\n";
       print QUALITY "fastqc -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/ $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext\n";
       
-      print ALIGNCALL "#Creating SAM file $id\_$sample_info{$sample}{$id}[$index].sam by aligning reads from fastQ files to reference genome $ref using $align\n\n";           
-      print ALIGNCALL "$align_cmd mem -M -t $threads -R \'\@RG\\tID:$sample\_$sample_info{$sample}{$id}[$lane]\_$sample_info{$sample}{$id}[$flow_cell]\\tSM:$sample\\tDT:$datetime\\tLB:$sample_info{$sample}{$id}[$library]\\tPL:$sample_info{$sample}{$id}[$platform]\\tCN:$sample_info{$sample}{$id}[$provider]\' $ref_file $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sam\n\n";
-      print ALIGNCALL "#Converting SAM file $id\_$sample_info{$sample}{$id}[$index].sam into BAM file $id\_$sample_info{$sample}{$id}[$index].bam, sorting and indexing BAM file $id\_$sample_info{$sample}{$id}[$index].sort.bam\n\n";
-      print ALIGNCALL "$samtools_cmd view -btS --threads $threads -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sam\n";
-      print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sam\n";
-      print ALIGNCALL "$samtools_cmd sort -T $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/ -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam\n";
-      print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam\n";
-      print ALIGNCALL "$samtools_cmd index $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].sort.bam\n\n";
-      $bam = $working_dir."/".$project."/".$project."_".$datetime."/".$sample."/".$sample."_".$datetime."/tmp/".$id."_".$sample_info{$sample}{$id}[$index].".sort.bam";
+      print ALIGNCALL "#Creating BAM file $id\_$sample_info{$sample}{$id}[$index].bam, sorting and indexing BAM file $id\_$sample_info{$sample}{$id}[$index].sort.bam\n\n";           
+      print ALIGNCALL "$align_cmd mem -M -t $threads -R \'\@RG\\tID:$sample\_$sample_info{$sample}{$id}[$lane]\_$sample_info{$sample}{$id}[$flow_cell]\\tSM:$sample\\tDT:$datetime\\tLB:$sample_info{$sample}{$id}[$library]\\tPL:$sample_info{$sample}{$id}[$platform]\\tCN:$sample_info{$sample}{$id}[$provider]\' $ref_file $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext | $samtools_cmd sort -n -@ $threads -T $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/ -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam -\n";
+      print ALIGNCALL "$samtools_cmd fixmate -m -@ $threads $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].fixmate.bam\n";
+     print ALIGNCALL "$samtools_cmd sort -@ $threads -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].fixmate.sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].fixmate.bam\n"; 
+      print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].fixmate.bam\n";
+      print ALIGNCALL "$samtools_cmd index $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].fixmate.sort.bam\n\n";
+      $bam = $working_dir."/".$project."/".$project."_".$datetime."/".$sample."/".$sample."_".$datetime."/tmp/".$id."_".$sample_info{$sample}{$id}[$index].".fixmate.sort.bam";
       push @bam, $bam;
       }
    if (scalar @bam>1)
@@ -263,7 +261,7 @@ foreach $sample (keys %sample_info)
          print ALIGNCALL "rm $bam[$i]\n";
          print ALIGNCALL "rm $bam[$i].bai\n";
          }
-      print ALIGNCALL "$samtools_cmd sort -T $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/ -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.bam\n";
+      print ALIGNCALL "$samtools_cmd sort -@ $threads -T $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/ -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.bam\n";
       print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.bam\n";
       print ALIGNCALL "$samtools_cmd index $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam\n\n";
       }
@@ -281,17 +279,18 @@ foreach $sample (keys %sample_info)
 
    print ALIGNCALL "#Marking duplicates in BAM file $sample.sort.bam\n\n";
    
-   print ALIGNCALL "$picard_cmd MarkDuplicates I=$working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam O=$working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam METRICS_FILE=$working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.sort.markdup.stats CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT\n\n";
+   print ALIGNCALL "$samtools_cmd markdup-s -f $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.sort.markdup.txt -T $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/ -@ $threads $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam\n";
+   print ALIGNCALL "$samtools_cmd index $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam\n\n";
    print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam\n";
    print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.bam.bai\n";
    
    print ALIGNCALL "#Producing Samtools flag statistics for BAM file $sample.sort.markdup.bam\n\n";
    
-   print ALIGNCALL "$samtools_cmd flagstat $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.sort.markdup.flagstat\n\n";
+   print ALIGNCALL "$samtools_cmd flagstat $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.sort.markdup.flagstat.txt\n\n";
    
-   print ALIGNCALL "#Validating BAM file $sample.sort.bam with Picard\n\n";
+   print ALIGNCALL "#Checking BAM file $sample.sort.bam\n\n";
    
-   print ALIGNCALL "$picard_cmd ValidateSamFile I=$working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam MODE=SUMMARY > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.sort.markdup.validate\n\n";
+   print ALIGNCALL "$samtools_cmd quickcheck -v $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.sort.markdup.quickcheck.txt\n\n";
    
    print ALIGNCALL "#Applying GATK Base Quality Score Recalibration on BAM file $sample.sort.markdup.bam, sorting and indexing BAM file $sample.sort.markdup.recal.bam\n\n";
    
