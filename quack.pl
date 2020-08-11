@@ -16,11 +16,12 @@ use Path::Tiny;
                                             #Declaring cycling $ variables
 my($i) = 0; my($j) = 0; my($k) = 0; my $bam;
                                             #Declaring input argv $ variables
-my($sample_file); my($param_file); my($threads)=1; my($project); my($ref); my($align)="bwa"; my($fastq_ext)="fastq.gz"; my($suffix)=""; my ($bed_ext)="";
+my($sample_file); my($param_file); my($threads)=1; my($project); my($ref); my($align)="bwa"; my($fastq_ext)="fastq.gz"; my($suffix)=""; my ($bed_ext)=""; my ($env)="";
                                             #Declaring sample sheet $ variables
 my($sample); my($flow_cell); my($lane); my($index); my($enrichment); my($target_set); my($library); my($platform); my($provider);
                                             #Declaring parameter file $ variables
 my($ref_file); my($target_dir); my($align_cmd); my($samtools_cmd); my($picard_cmd); my($gatk_cmd); my($gatk3_cmd); my($working_dir); my($fastq_dir); my($gvcf_dir); my($bam_dir); my($operator); my($id); my($refseq_genes);
+my($qual_env); my($cvg_env); my($align_env); my($call_env);
                                             #Declaring date and time $ variables
 my($second,$minute,$hour,$monthday,$month,$year,$weekday,$yearday) = localtime(time); my($datetime);
                                             #Declaring user name $ variables
@@ -46,7 +47,8 @@ GetOptions( 'sample_file=s' => \$sample_file,
             'threads=i' => \$threads,
             'fastq_extension=s' => \$fastq_ext,
             'fastq_suffix=s' => \$suffix,
-            'extended_bed=s' => \$bed_ext
+            'extended_bed=s' => \$bed_ext,
+            'environments' => \$env
 ) or die "Invalid arguments!";
 
 die "Missing sample sheet specification" unless $sample_file;
@@ -119,6 +121,22 @@ while (<PARAM>)
    if ($line[0] eq "refseq_genes")
       {
       $refseq_genes=$line[1];
+      }
+   if ($line[0] eq "quality_environment")
+      {
+      $qual_env=$line[1];
+      }
+   if ($line[0] eq "alignment_environment")
+      {
+      $align_env=$line[1];
+      }
+   if ($line[0] eq "calling_environment")
+      {
+      $call_env=$line[1];
+      }
+   if ($line[0] eq "coverage_environment")
+      {
+      $cvg_env=$line[1];
       }
    }
    
@@ -225,27 +243,44 @@ foreach $sample (keys %sample_info)
    open COVERAGE, "+>$working_dir/$project/$project\_$datetime/bash/coverage/pipeline_coverage\_$sample.$datetime.sh" or die $!;
    
    print QUALITY  "#!/bin/bash\n\n";
+   if ($env)
+         {
+         print QUALITY "conda activate $qual_env\n\n";
+         }
    print ALIGNCALL "#!/bin/bash\n\n";
+   if ($env)
+         {
+         print ALIGNCALL "conda activate $align_env\n\n";
+         }
    print COVERAGE "#!/bin/bash\n\n";
+   if ($env)
+         {
+         print COVERAGE "conda activate $cvg_env\n\n";
+         }
    
    foreach $id ( sort keys %{ $sample_info{$sample} } )
       {
       print LOG "Enrichment kit used for $id: $sample_info{$sample}{$id}[$enrichment]\n";
       print QUALITY "#Performing fastQC analysis on fastQ files\n\n";
       print LOG "fastqc -v\n";
-      print 
       print QUALITY "fastqc -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/ $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext\n";
       print QUALITY "fastqc -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/ $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext\n";
       
       print ALIGNCALL "#Creating BAM file $id\_$sample_info{$sample}{$id}[$index].bam, sorting and indexing BAM file $id\_$sample_info{$sample}{$id}[$index].sort.bam\n\n";           
       print ALIGNCALL "$align_cmd mem -M -t $threads -R \'\@RG\\tID:$sample\_$sample_info{$sample}{$id}[$lane]\_$sample_info{$sample}{$id}[$flow_cell]\\tSM:$sample\\tDT:$datetime\\tLB:$sample_info{$sample}{$id}[$library]\\tPL:$sample_info{$sample}{$id}[$platform]\\tCN:$sample_info{$sample}{$id}[$provider]\' $ref_file $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R1$suffix.$fastq_ext $fastq_dir/$sample/$id\_$sample_info{$sample}{$id}[$index]\_R2$suffix.$fastq_ext | $samtools_cmd sort -n -@ $threads -T $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/ -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam -\n";
       print ALIGNCALL "$samtools_cmd fixmate -m -@ $threads $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].fixmate.bam\n";
-     print ALIGNCALL "$samtools_cmd sort -@ $threads -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].fixmate.sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].fixmate.bam\n"; 
+      print ALIGNCALL "$samtools_cmd sort -@ $threads -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].fixmate.sort.bam $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].fixmate.bam\n"; 
       print ALIGNCALL "rm $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].fixmate.bam\n";
       print ALIGNCALL "$samtools_cmd index $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$id\_$sample_info{$sample}{$id}[$index].fixmate.sort.bam\n\n";
       $bam = $working_dir."/".$project."/".$project."_".$datetime."/".$sample."/".$sample."_".$datetime."/tmp/".$id."_".$sample_info{$sample}{$id}[$index].".fixmate.sort.bam";
       push @bam, $bam;
       }
+      
+   if ($env)
+         {
+         print QUALITY "conda deactivate\n";
+         }
+         
    if (scalar @bam>1)
       {
       print ALIGNCALL "#Merging multiple BAM file into BAM file $sample\_$datetime/tmp/$sample.bam, sorting and indexing $sample.sort.bam\n\n";
@@ -292,6 +327,11 @@ foreach $sample (keys %sample_info)
    
    print ALIGNCALL "$samtools_cmd quickcheck -v $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam > $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.sort.markdup.quickcheck.txt\n\n";
    
+   if ($env)
+         {
+         print ALIGNCALL "conda activate $call_env\n\n";
+         }
+   
    print ALIGNCALL "#Applying GATK Base Quality Score Recalibration on BAM file $sample.sort.markdup.bam, sorting and indexing BAM file $sample.sort.markdup.recal.bam\n\n";
    
    print ALIGNCALL "$gatk_cmd BaseRecalibrator -I $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.bam -O $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/tmp/$sample.sort.markdup.recal_data.table -R $ref_file";
@@ -316,7 +356,17 @@ foreach $sample (keys %sample_info)
 
    print ALIGNCALL "$gatk_cmd HaplotypeCaller -R $ref_file -I $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam --emit-ref-confidence GVCF -L $target_dir/$target_set$bed_ext.bed -O $gvcf_dir/$project/$sample/$sample.g.vcf\n";
    
+   if ($env)
+         {
+         print ALIGNCALL "conda deactivate\n";
+         }
+   
    print COVERAGE "$gatk3_cmd -T DepthOfCoverage -R $ref_file -I $bam_dir/$project/$sample/$sample.markdup.recal.sort.bam -L $target_dir/$target_set.bed -geneList $refseq_genes -o $working_dir/$project/$project\_$datetime/$sample/$sample\_$datetime/qual/$sample.coverage -omitBaseOutput -ct 20\n";
+   
+   if ($env)
+         {
+         print COVERAGE "conda deactivate\n";
+         }
    
    @bam = ();
 
